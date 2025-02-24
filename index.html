@@ -27,12 +27,12 @@
 <body>
     <h1>Real-time Singapore Pollutant Standards Index (PSI)</h1>
     <h3><a href="https://data.gov.sg/">data.gov.sg</a></h3>
-    <h3>SGT timestamp of the reading: <span id="update_time"></span></h3>
+    <p>SGT timestamp of the reading: <span id="timestamp"></span></p>
      <!-- test -->
        
     <br>
 
-    <table id="psi-table">
+    <table id="psi-table" style="width: auto; border-collapse: collapse;">
         <thead>
             <tr>
                 <th>Region</th>
@@ -63,9 +63,9 @@
             console.log('API Data:', data); // Debugging line
 
             const readings = data.items[0].readings;
-            //const update_timestamp = data.items.update_timestamp;
             const regionMetadata = data.region_metadata;
             const timestamp = data.items[0].timestamp;
+            document.getElementById('timestamp').innerText = timestamp;
             const tbody = document.querySelector('#psi-table tbody');
             tbody.innerHTML = ''; // Clear table
 
@@ -74,17 +74,17 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${regionName}</td>
-                    <td>${readings.o3_sub_index[regionName.toLowerCase()]}</td>
-                    <td>${readings.pm10_twenty_four_hourly[regionName.toLowerCase()]}</td>
-                    <td>${readings.pm10_sub_index[regionName.toLowerCase()]}</td>
-                    <td>${readings.co_sub_index[regionName.toLowerCase()]}</td>
-                    <td>${readings.pm25_twenty_four_hourly[regionName.toLowerCase()]}</td>
-                    <td>${readings.pm25_sub_index[regionName.toLowerCase()]}</td>
-                    <td>${readings.so2_sub_index[regionName.toLowerCase()]}</td>
-                    <td>${readings.co_eight_hour_max[regionName.toLowerCase()]}</td>
-                    <td>${readings.no2_one_hour_max[regionName.toLowerCase()]}</td>
-                    <td>${readings.so2_twenty_four_hourly[regionName.toLowerCase()]}</td>
-                    <td>${readings.o3_eight_hour_max[regionName.toLowerCase()]}</td>
+                    <td>${readings.o3_sub_index[regionName]}</td>
+                    <td>${readings.pm10_twenty_four_hourly[regionName]}</td>
+                    <td>${readings.pm10_sub_index[regionName]}</td>
+                    <td>${readings.co_sub_index[regionName]}</td>
+                    <td>${readings.pm25_twenty_four_hourly[regionName]}</td>
+                    <td>${readings.pm25_sub_index[regionName]}</td>
+                    <td>${readings.so2_sub_index[regionName]}</td>
+                    <td>${readings.co_eight_hour_max[regionName]}</td>
+                    <td>${readings.no2_one_hour_max[regionName]}</td>
+                    <td>${readings.so2_twenty_four_hourly[regionName]}</td>
+                    <td>${readings.o3_eight_hour_max[regionName]}</td>
                     <td>${readings.psi_twenty_four_hourly[regionName]}</td>
                 `;
                 tbody.appendChild(row);
