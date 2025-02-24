@@ -45,19 +45,49 @@
             </tr>
         </thead>
         <tbody>
-             <script>
-                fetch('https://api.data.gov.sg/v1/environment/psi')
-                  .then(response => response.json())
-                  .then(data => console.log(data));
-            </script>
             <!-- Data will be inserted here -->
         </tbody>
     </table>
 
     <script>
-        fetch('https://api.data.gov.sg/v1/environment/psi')
-          .then(response => response.json())
-          .then(data => console.log(data));
-    </script>
+    async function fetchPSIData() {
+        try {
+            const response = await fetch('https://api.data.gov.sg/v1/environment/psi');
+            const data = await response.json();
+            console.log('API Data:', data); // Debugging line
+
+            const readings = data.items[0].readings;
+            const regionMetadata = data.region_metadata;
+
+            const tbody = document.querySelector('#psi-table tbody');
+            tbody.innerHTML = ''; // Clear table
+
+            regionMetadata.forEach(region => {
+                const regionName = region.name;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${regionName}</td>
+                    <td>${readings.o3_sub_index[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.pm10_twenty_four_hourly[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.pm10_sub_index[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.co_sub_index[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.pm25_twenty_four_hourly[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.pm25_sub_index[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.so2_sub_index[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.co_eight_hour_max[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.no2_one_hour_max[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.so2_twenty_four_hourly[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.o3_eight_hour_max[regionName.toLowerCase()] || 'N/A'}</td>
+                    <td>${readings.psi_twenty_four_hourly[regionName.toLowerCase()] || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching or processing data:', error);
+        }
+    }
+
+    fetchPSIData();
+</script>
 </body>
 </html>
